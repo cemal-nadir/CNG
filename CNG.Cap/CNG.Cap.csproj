@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Title>Cemal Nadir Gorgorgil - Cap</Title>
+    <Authors>cemalnadirgorgorgil</Authors>
+    <Description>Cap package for my projects</Description>
+    <PackageProjectUrl>https://www.nuget.org/packages/CNG.Cap</PackageProjectUrl>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageTags>cap</PackageTags>
+    <IncludeSymbols>True</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotNetCore.CAP" Version="7.1.1" />
+    <PackageReference Include="DotNetCore.CAP.Dashboard" Version="7.1.1" />
+    <PackageReference Include="DotNetCore.CAP.MongoDB" Version="7.1.1" />
+    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="7.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.19.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
