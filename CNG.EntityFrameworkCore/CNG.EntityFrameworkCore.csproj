@@ -13,6 +13,7 @@
     <PackageTags>entity framework core</PackageTags>
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <RepositoryUrl>https://github.com/cemal-nadir/CNG</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

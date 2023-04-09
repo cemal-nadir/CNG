@@ -12,6 +12,8 @@
     <PackageTags>abstractions</PackageTags>
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <RepositoryUrl>https://github.com/cemal-nadir/CNG</RepositoryUrl>
+    <PackageProjectUrl>https://www.nuget.org/packages/CNG.Abstractions</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>

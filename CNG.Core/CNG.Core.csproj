@@ -11,6 +11,7 @@
     <PackageProjectUrl>https://www.nuget.org/packages/CNG.Core</PackageProjectUrl>
     <PackageIcon>icon.png</PackageIcon>
     <PackageTags>core</PackageTags>
+    <RepositoryUrl>https://github.com/cemal-nadir/CNG</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

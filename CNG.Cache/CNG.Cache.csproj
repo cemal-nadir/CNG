@@ -11,6 +11,7 @@
     <PackageProjectUrl>https://www.nuget.org/packages/CNG.Cache</PackageProjectUrl>
     <PackageIcon>icon.png</PackageIcon>
     <PackageTags>cache,redis</PackageTags>
+    <RepositoryUrl>https://github.com/cemal-nadir/CNG</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
