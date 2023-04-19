@@ -25,10 +25,10 @@ namespace CNG.EntityFrameworkCore.Extensions
                     services.AddScoped<DbContext, TContext>();
                     break;
                 case ServiceLifetime.Transient:
-                    break;
                 default:
                     services.AddTransient<DbContext, TContext>();
                     break;
+
             }
             services.AddDbContext<TContext>((Action<DbContextOptionsBuilder>)(o =>
             {
@@ -36,11 +36,11 @@ namespace CNG.EntityFrameworkCore.Extensions
                 switch (option.DatabaseType)
                 {
                     case DatabaseType.MsSql:
-                        o.UseSqlServer(connectionString, (x => x.CommandTimeout(int.MaxValue)));
+                        o.UseSqlServer(connectionString, (x => x.CommandTimeout(600))).EnableDetailedErrors();
 
                         break;
                     case DatabaseType.PostgreSql:
-                        o.UseNpgsql(connectionString, (x => x.CommandTimeout(int.MaxValue)));
+                        o.UseNpgsql(connectionString, (x => x.CommandTimeout(600))).EnableDetailedErrors();
 
                         break;
                     default:
@@ -54,7 +54,7 @@ namespace CNG.EntityFrameworkCore.Extensions
         {
             var service = app.ApplicationServices.GetService<TContext>();
 
-            service?.Database.Migrate();
+            //service?.Database.Migrate();
 
             Console.WriteLine("Connection String :" + service?.Database.GetConnectionString());
             Console.WriteLine("Database Migrated!!");

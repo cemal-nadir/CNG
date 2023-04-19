@@ -51,7 +51,7 @@ namespace CNG.EntityFrameworkCore.Extensions
                     interpolatedStringHandler3.AppendFormatted(option.Password);
                     interpolatedStringHandler3.AppendLiteral(";Port=");
                     interpolatedStringHandler3.AppendFormatted(option.Port);
-                    interpolatedStringHandler3.AppendLiteral(";");
+                    interpolatedStringHandler3.AppendLiteral(";Include Error Detail=true;");
                     return interpolatedStringHandler3.ToStringAndClear();
                 default:
                     throw new NotFoundException("DatabaseType not found");
