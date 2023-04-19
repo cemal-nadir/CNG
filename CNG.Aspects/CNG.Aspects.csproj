@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>Cemal Nadir Gorgorgil - Aspects</Title>
+		<Authors>cemalnadirgorgorgil</Authors>
+		<Description>Aspect package for my projects</Description>
+		<PackageIcon>icon.png</PackageIcon>
+		<PackageTags>aspect</PackageTags>
+		<IncludeSymbols>True</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<RepositoryUrl>https://github.com/cemal-nadir/CNG</RepositoryUrl>
+		<PackageProjectUrl>https://www.nuget.org/packages/CNG.Aspects</PackageProjectUrl>
+		<Deterministic>False</Deterministic>
+		<Copyright>https://raw.githubusercontent.com/cemal-nadir/CNG/master/LICENSE</Copyright>
+		<GenerateDocumentationFile>False</GenerateDocumentationFile>
+		<Version>1.0.1</Version>
+	</PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Castle.Core" Version="5.1.1" />
+    <PackageReference Include="FluentValidation" Version="11.5.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CNG.Cache\CNG.Cache.csproj" />
+    <ProjectReference Include="..\CNG.Core\CNG.Core.csproj" />
+    <ProjectReference Include="..\CNG.Extensions\CNG.Extensions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

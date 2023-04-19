@@ -16,7 +16,7 @@ namespace CNG.Cache
             _option = option;
         }
 
-        public async Task<bool> AnyAsync(string key, int db = 0)
+        public async Task<bool> AnyAsync(string? key, int db = 0)
         {
             var database = _server.GetDb(db);
             RedisValue redisValue = await database.StringGetAsync(new RedisKey(_option.InstanceName + "." + key));
@@ -68,7 +68,7 @@ namespace CNG.Cache
             return async;
         }
 
-        public async Task<string> GetAsync(string key, int db = 0)
+        public async Task<string> GetAsync(string? key, int db = 0)
         {
             var database = _server.GetDb(db);
             RedisValue redisValue = await database.StringGetAsync(new RedisKey(_option.InstanceName + "." + key));
@@ -86,7 +86,7 @@ namespace CNG.Cache
             return async;
         }
 
-        public async Task SetAsync(string key, string data, int? minute = null, int db = 0)
+        public async Task SetAsync(string? key, string data, int? minute = null, int db = 0)
         {
             minute ??= _option.AbsoluteExpiration;
             var database = _server.GetDb(db);
@@ -94,7 +94,7 @@ namespace CNG.Cache
             await database.StringSetAsync(new RedisKey(_option.InstanceName + "." + key), new RedisValue(data), TimeSpan.FromMinutes(minute.Value));
         }
 
-        public async Task SetAsync(string instanceName, string key, string data, int? minute = null, int db = 0)
+        public async Task SetAsync(string instanceName, string? key, string data, int? minute = null, int db = 0)
         {
             minute ??= _option.AbsoluteExpiration;
             var database = _server.GetDb(db);
@@ -102,7 +102,7 @@ namespace CNG.Cache
             await database.StringSetAsync(new RedisKey(instanceName + "." + key),new RedisValue(data), TimeSpan.FromMinutes(minute.Value));
         }
 
-        public async Task RemoveAsync(string key, int db = 0)
+        public async Task RemoveAsync(string? key, int db = 0)
         {
             var database = _server.GetDb(db);
             var flag = await AnyAsync(key, db);
