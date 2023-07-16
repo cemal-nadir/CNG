@@ -1,5 +1,4 @@
-﻿#nullable enable
-namespace CNG.EntityFrameworkCore.Models
+﻿namespace CNG.EntityFrameworkCore.Models
 {
   public class PagedList<T>
   {

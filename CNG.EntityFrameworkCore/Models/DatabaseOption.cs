@@ -1,5 +1,4 @@
-﻿#nullable enable
-using CNG.EntityFrameworkCore.Enums;
+﻿using CNG.EntityFrameworkCore.Enums;
 
 namespace CNG.EntityFrameworkCore.Models
 {

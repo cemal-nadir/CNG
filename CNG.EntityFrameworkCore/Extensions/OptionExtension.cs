@@ -19,7 +19,7 @@ namespace CNG.EntityFrameworkCore.Extensions
                     ref var local1 = ref interpolatedStringHandler1;
                     var port1 = option.Port;
                     string str1;
-                    if (!port1.HasValue || port1.GetValueOrDefault() <= 0)
+                    if (port1 is not > 0)
                     {
                         str1 = "";
                     }

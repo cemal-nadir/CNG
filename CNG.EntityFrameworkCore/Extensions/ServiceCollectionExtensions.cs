@@ -1,5 +1,4 @@
-﻿#nullable enable
-using CNG.Core.Exceptions;
+﻿using CNG.Core.Exceptions;
 using CNG.EntityFrameworkCore.Enums;
 using CNG.EntityFrameworkCore.Models;
 using Microsoft.AspNetCore.Builder;
@@ -47,7 +46,7 @@ namespace CNG.EntityFrameworkCore.Extensions
                         throw new NotFoundException("DatabaseType not found");
                 }
             }), lifetime);
-            Console.WriteLine(option.DatabaseType.ToString() + " Database Service is installed");
+            Console.WriteLine(option.DatabaseType + " Database Service is installed");
         }
 
         public static void DbMigrate<TContext>(this IApplicationBuilder app) where TContext : DbContext
