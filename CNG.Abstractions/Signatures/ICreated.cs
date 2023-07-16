@@ -5,7 +5,7 @@ namespace CNG.Abstractions.Signatures
 {
   public interface ICreated
   {
-    string? CreatedUser { get; set; }
+    string? CreatedUserId { get; set; }
 
     DateTime CreatedAt { get; set; }
   }
