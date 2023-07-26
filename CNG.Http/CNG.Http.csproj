@@ -14,13 +14,20 @@
     <RepositoryUrl>https://github.com/cemal-nadir/CNG</RepositoryUrl>
 	  <Deterministic>False</Deterministic>
 	  <Copyright>https://raw.githubusercontent.com/cemal-nadir/CNG/master/LICENSE</Copyright>
-	  <Version>1.0.1</Version>
+	  <Version>2.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
+    <PackageReference Include="IdentityModel" Version="6.1.0" />
+    <PackageReference Include="IdentityModel.AspNetCore" Version="4.3.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CNG.Core\CNG.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
