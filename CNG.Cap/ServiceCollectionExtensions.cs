@@ -45,6 +45,7 @@ namespace CNG.Cap
       services.AddSingleton<IMongoClient>(new MongoClient(mongoConnection));
       services.AddCap(x =>
       {
+        
           x.Version = options.Version;
           x.FailedRetryCount = options.FailedRetryCount;
           x.DefaultGroupName = options.GroupName;

@@ -37,8 +37,10 @@ namespace CNG.EntityFrameworkCore.Extensions
                     interpolatedStringHandler1.AppendFormatted(option.UserName);
                     interpolatedStringHandler1.AppendLiteral(";Password=");
                     interpolatedStringHandler1.AppendFormatted(option.Password);
-                    interpolatedStringHandler1.AppendLiteral(";");
-                    return interpolatedStringHandler1.ToStringAndClear();
+                    interpolatedStringHandler1.AppendLiteral(";TrustServerCertificate="); 
+                    interpolatedStringHandler1.AppendFormatted("True;");
+
+					return interpolatedStringHandler1.ToStringAndClear();
                 case DatabaseType.PostgreSql:
                     var interpolatedStringHandler3 = new DefaultInterpolatedStringHandler(37, 5);
                     interpolatedStringHandler3.AppendLiteral("Server=");
