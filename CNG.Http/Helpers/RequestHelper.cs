@@ -21,7 +21,6 @@ namespace CNG.Http.Helpers
 				throw new BadRequestException("Please set client before using");
 
 			var requestMessage = new HttpRequestMessage(method, url);
-			requestMessage.Headers.Host = new Uri(url).Host;
 
 			var response = await client.SendAsync(requestMessage, cancellationToken);
 
@@ -33,8 +32,8 @@ namespace CNG.Http.Helpers
 			try
 			{
 				var ex = JsonConvert.DeserializeObject<ExceptionResponse?>(message);
-				if (ex is null)
-					return new HttpClientErrorResponse<TResponse>(message, response.Headers, response.StatusCode);
+				if (ex?.Message is null)
+					throw new Exception();
 				if (!string.IsNullOrEmpty(ex.ExceptionMessage))
 					ex.Message = ex.ExceptionMessage;
 				return new HttpClientErrorResponse<TResponse>(ex.ParseToException(), response.Headers, response.StatusCode);
@@ -52,8 +51,6 @@ namespace CNG.Http.Helpers
 			
 
 			var requestMessage = new HttpRequestMessage(method, url);
-		
-			requestMessage.Headers.Host = new Uri(url).Host;
 
 			var response = await client.SendAsync(requestMessage, cancellationToken);
 
@@ -65,8 +62,8 @@ namespace CNG.Http.Helpers
 			try
 			{
 				var ex = JsonConvert.DeserializeObject<ExceptionResponse?>(message);
-				if (ex is null)
-					return new HttpClientErrorResponse(message, response.Headers, response.StatusCode);
+				if (ex?.Message is null)
+					throw new Exception();
 				if (!string.IsNullOrEmpty(ex.ExceptionMessage))
 					ex.Message = ex.ExceptionMessage;
 				return new HttpClientErrorResponse(ex.ParseToException(), response.Headers, response.StatusCode);
@@ -85,7 +82,6 @@ namespace CNG.Http.Helpers
 
 			var requestMessage = new HttpRequestMessage(method, url);
 			requestMessage.Content = content;
-			requestMessage.Headers.Host = new Uri(url).Host;
 
 			var response = await client.SendAsync(requestMessage, cancellationToken);
 
@@ -97,8 +93,8 @@ namespace CNG.Http.Helpers
 			try
 			{
 				var ex = JsonConvert.DeserializeObject<ExceptionResponse?>(message);
-				if (ex is null)
-					return new HttpClientErrorResponse(message, response.Headers, response.StatusCode);
+				if (ex?.Message is null)
+					throw new Exception();
 				if (!string.IsNullOrEmpty(ex.ExceptionMessage))
 					ex.Message = ex.ExceptionMessage;
 				return new HttpClientErrorResponse(ex.ParseToException(), response.Headers, response.StatusCode);
@@ -117,7 +113,6 @@ namespace CNG.Http.Helpers
 
 			var requestMessage = new HttpRequestMessage(method, url);
 			requestMessage.Content = content;
-			requestMessage.Headers.Host = new Uri(url).Host;
 
 			var response = await client.SendAsync(requestMessage, cancellationToken);
 
@@ -129,8 +124,8 @@ namespace CNG.Http.Helpers
 			try
 			{
 				var ex = JsonConvert.DeserializeObject<ExceptionResponse?>(message);
-				if (ex is null)
-					return new HttpClientErrorResponse<TResponse>(message, response.Headers, response.StatusCode);
+				if (ex?.Message is null)
+					throw new Exception();
 				if (!string.IsNullOrEmpty(ex.ExceptionMessage))
 					ex.Message = ex.ExceptionMessage;
 				return new HttpClientErrorResponse<TResponse>(ex.ParseToException(), response.Headers, response.StatusCode);
