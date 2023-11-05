@@ -53,7 +53,7 @@ namespace CNG.EntityFrameworkCore.Extensions
         {
             var service = app.ApplicationServices.GetService<TContext>();
 
-            //service?.Database.Migrate();
+            service?.Database.Migrate();
 
             Console.WriteLine("Connection String :" + service?.Database.GetConnectionString());
             Console.WriteLine("Database Migrated!!");

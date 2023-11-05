@@ -12,18 +12,28 @@ namespace CNG.EntityFrameworkCore.Extensions
         {
             var builder = new DbContextOptionsBuilder<TContext>();
             var connectionString = option.GetConnectionString();
-            switch (option.DatabaseType)
+            var migrationAssemblyName = typeof(TContext).Assembly.GetName().Name;
+            var migrationNamespace = typeof(TContext).Namespace + ".Migrations";
+			switch (option.DatabaseType)
             {
                 case DatabaseType.MsSql:
-                    builder.UseSqlServer(connectionString);
+                    builder.UseSqlServer(connectionString, options =>
+                    {
+	                    options.MigrationsAssembly(migrationAssemblyName);
+	                    options.MigrationsHistoryTable("__EFMigrationsHistory", migrationNamespace);
+                    });
                     break;
                 case DatabaseType.PostgreSql:
-                    builder.UseNpgsql(connectionString);
+                    builder.UseNpgsql(connectionString, options =>
+                    {
+	                    options.MigrationsAssembly(migrationAssemblyName);
+	                    options.MigrationsHistoryTable("__EFMigrationsHistory", migrationNamespace);
+                    });
                     break;
                 default:
                     throw new NotFoundException("DatabaseType not found");
             }
-          
+        
             var response = (TContext?)Activator.CreateInstance(
                 typeof(TContext),
                 builder.Options);

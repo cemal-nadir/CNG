@@ -9,8 +9,7 @@ namespace CNG.EntityFrameworkCore.Models
       string host,
       string dbName,
       string userName,
-      string password,
-      int? port = null)
+      string password, int? port = null)
     {
       this.DatabaseType = databaseType;
       this.Host = host;

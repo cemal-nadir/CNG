@@ -23,6 +23,13 @@ namespace CNG.Http.Services
 
 		Task<HttpClientResponse> PostAsync(string url, CancellationToken cancellationToken = default(CancellationToken));
 
+		Task<HttpClientResponse<TResponse>> PostAsync<TResponse>(string url,
+			CancellationToken cancellationToken = default);
+
+		Task<HttpClientResponse<TResponse>> PostAsync<TRequest, TResponse>(
+			string url,
+			TRequest data,
+			CancellationToken cancellationToken = default);
 		Task<HttpClientResponse> HttpPutAsync<T>(
 		  string url,
 		  T data,

@@ -51,7 +51,7 @@ namespace CNG.Http.Services
 			}
 		}
 
-		public async Task<HttpClientResponse> GetAsync(string url, CancellationToken cancellationToken = default(CancellationToken))
+		public async Task<HttpClientResponse> GetAsync(string url, CancellationToken cancellationToken = default)
 		{
 			if (_client == null)
 				throw new BadRequestException("Please set client before using");
@@ -99,20 +99,20 @@ namespace CNG.Http.Services
 					ex.Message = ex.ExceptionMessage;
 				return new HttpClientErrorResponse<T>(ex.ParseToException(), response.Headers, response.StatusCode);
 			}
-			catch (Exception ex)
-			{
-				return new HttpClientErrorResponse<T>(ex.Message, response.Headers, response.StatusCode);
+			catch {
+				return new HttpClientErrorResponse<T>(message, response.Headers, response.StatusCode);
 			}
 		}
 
-		public async Task<HttpClientResponse> PostAsync<T>(
+		public async Task<HttpClientResponse> PostAsync<TRequest>(
 		  string url,
-		  T data,
+		  TRequest data,
 		  CancellationToken cancellationToken = default)
 		{
 			if (_client == null)
 				throw new BadRequestException("Please set client before using");
 			var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+			content.Headers.Add("Host",new Uri(url).Host);
 			var response = await _client.PostAsync(_baseUrl + url, content, cancellationToken);
 			if (response.StatusCode == HttpStatusCode.Unauthorized)
 				return new HttpClientErrorResponse("Unauthorized", response.StatusCode);
@@ -128,9 +128,39 @@ namespace CNG.Http.Services
 					ex.Message = ex.ExceptionMessage;
 				return new HttpClientErrorResponse(ex.ParseToException(), response.Headers, response.StatusCode);
 			}
-			catch (Exception ex)
+			catch {
+				return new HttpClientErrorResponse(message, response.Headers, response.StatusCode);
+
+			}
+		}
+		public async Task<HttpClientResponse<TResponse>> PostAsync<TRequest,TResponse>(
+			string url,
+			TRequest data,
+			CancellationToken cancellationToken = default)
+		{
+			if (_client == null)
+				throw new BadRequestException("Please set client before using");
+			var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+			content.Headers.Add("Host", new Uri(url).Host);
+			var response = await _client.PostAsync(_baseUrl + url, content, cancellationToken);
+			if (response.StatusCode == HttpStatusCode.Unauthorized)
+				return new HttpClientErrorResponse<TResponse>("Unauthorized", response.StatusCode);
+			var message = await response.Content.ReadAsStringAsync(cancellationToken);
+			if (response.IsSuccessStatusCode)
+				return new HttpClientSuccessResponse<TResponse>(JsonConvert.DeserializeObject<TResponse>(message), response.Headers);
+			try
 			{
-				return new HttpClientErrorResponse(ex.Message, response.Headers, response.StatusCode);
+				var ex = JsonConvert.DeserializeObject<ExceptionResponse?>(message);
+				if (ex is null)
+					return new HttpClientErrorResponse<TResponse>(message, response.Headers, response.StatusCode);
+				if (!string.IsNullOrEmpty(ex.ExceptionMessage))
+					ex.Message = ex.ExceptionMessage;
+				return new HttpClientErrorResponse<TResponse>(ex.ParseToException(), response.Headers, response.StatusCode);
+			}
+			catch
+			{
+				return new HttpClientErrorResponse<TResponse>(message, response.Headers, response.StatusCode);
+
 			}
 		}
 
@@ -151,11 +181,34 @@ namespace CNG.Http.Services
 					ex.Message = ex.ExceptionMessage;
 				return new HttpClientErrorResponse(ex.ParseToException(), response.Headers, response.StatusCode);
 			}
-			catch (Exception ex)
+			catch
 			{
-				return new HttpClientErrorResponse(ex.Message, response.Headers, response.StatusCode);
+				return new HttpClientErrorResponse(message, response.Headers, response.StatusCode);
 			}
 		}
+		public async Task<HttpClientResponse<TResponse>> PostAsync<TResponse>(string url, CancellationToken cancellationToken = default)
+		{
+			if (_client == null)
+				throw new BadRequestException("Please set client before using");
+			var response = await _client.PostAsync(_baseUrl + url, null, cancellationToken);
+			if (response.StatusCode == HttpStatusCode.Unauthorized)
+				return new HttpClientErrorResponse<TResponse>("Unauthorized", response.StatusCode);
+			var message = await response.Content.ReadAsStringAsync(cancellationToken);
+			if (response.IsSuccessStatusCode)
+				return new HttpClientSuccessResponse<TResponse>(JsonConvert.DeserializeObject<TResponse>(message), response.Headers);
+			try
+			{
+				var ex = JsonConvert.DeserializeObject<ExceptionResponse?>(message);
+				if (!string.IsNullOrEmpty(ex?.ExceptionMessage))
+					ex.Message = ex.ExceptionMessage;
+				return new HttpClientErrorResponse<TResponse>(ex.ParseToException(), response.Headers, response.StatusCode);
+			}
+			catch
+			{
+				return new HttpClientErrorResponse<TResponse>(message, response.Headers, response.StatusCode);
+			}
+		}
+
 
 		public async Task<HttpClientResponse> HttpPutAsync<T>(
 		  string url,
@@ -165,6 +218,7 @@ namespace CNG.Http.Services
 			if (_client == null)
 				throw new BadRequestException("Please set client before using");
 			var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+			content.Headers.Add("Host", new Uri(url).Host);
 			var response = await _client.PutAsync(_baseUrl + url, content, cancellationToken);
 			if (response.StatusCode == HttpStatusCode.Unauthorized)
 				return new HttpClientErrorResponse("Unauthorized", response.StatusCode);
@@ -178,9 +232,8 @@ namespace CNG.Http.Services
 					ex.Message = ex.ExceptionMessage;
 				return new HttpClientErrorResponse(ex.ParseToException(), response.Headers, response.StatusCode);
 			}
-			catch (Exception ex)
-			{
-				return new HttpClientErrorResponse(ex.Message, response.Headers, response.StatusCode);
+			catch {
+				return new HttpClientErrorResponse(message, response.Headers, response.StatusCode);
 			}
 		}
 
@@ -192,6 +245,7 @@ namespace CNG.Http.Services
 			if (_client == null)
 				throw new BadRequestException("Please set client before using");
 			var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+			content.Headers.Add("Host", new Uri(url).Host);
 			var response = await _client.PatchAsync(_baseUrl + url, content, cancellationToken);
 			if (response.StatusCode == HttpStatusCode.Unauthorized)
 				return new HttpClientErrorResponse("Unauthorized", response.StatusCode);
@@ -205,9 +259,8 @@ namespace CNG.Http.Services
 					ex.Message = ex.ExceptionMessage;
 				return new HttpClientErrorResponse(ex.ParseToException(), response.Headers, response.StatusCode);
 			}
-			catch (Exception ex)
-			{
-				return new HttpClientErrorResponse(ex.Message, response.Headers, response.StatusCode);
+			catch {
+				return new HttpClientErrorResponse(message, response.Headers, response.StatusCode);
 			}
 		}
 
@@ -230,9 +283,8 @@ namespace CNG.Http.Services
 					ex.Message = ex.ExceptionMessage;
 				return new HttpClientErrorResponse(ex.ParseToException(), response.Headers, response.StatusCode);
 			}
-			catch (Exception ex)
-			{
-				return new HttpClientErrorResponse(ex.Message, response.Headers, response.StatusCode);
+			catch {
+				return new HttpClientErrorResponse(message, response.Headers, response.StatusCode);
 			}
 		}
 	}

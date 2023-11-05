@@ -16,7 +16,7 @@
     <RepositoryUrl>https://github.com/cemal-nadir/CNG</RepositoryUrl>
 	  <Deterministic>False</Deterministic>
 	  <Copyright>https://raw.githubusercontent.com/cemal-nadir/CNG/master/LICENSE</Copyright>
-	  <Version>1.1.0</Version>
+	  <Version>1.1.3</Version>
   </PropertyGroup>
 
   <ItemGroup>
