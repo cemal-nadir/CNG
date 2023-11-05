@@ -1,10 +1,8 @@
-﻿using System.Net;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using System.Text;
 using CNG.Core.Exceptions;
-using CNG.Http.Extensions;
+using CNG.Http.Helpers;
 using CNG.Http.Responses;
-using Newtonsoft.Json;
 
 namespace CNG.Http.Services
 {
@@ -51,241 +49,49 @@ namespace CNG.Http.Services
 			}
 		}
 
-		public async Task<HttpClientResponse> GetAsync(string url, CancellationToken cancellationToken = default)
-		{
-			if (_client == null)
-				throw new BadRequestException("Please set client before using");
-			var response = await _client.GetAsync(this._baseUrl + url, cancellationToken);
-			if (response.StatusCode == HttpStatusCode.Unauthorized)
-				return new HttpClientErrorResponse("Unauthorized", response.StatusCode);
-			var message = await response.Content.ReadAsStringAsync(cancellationToken);
-			if (response.IsSuccessStatusCode)
-				return new HttpClientSuccessResponse(message, response.Headers);
-			try
-			{
-				var ex = JsonConvert.DeserializeObject<ExceptionResponse?>(message);
-				if (ex is null)
-					return new HttpClientErrorResponse(message, response.Headers, response.StatusCode);
+		public async Task<HttpClientResponse> GetAsync(string url, CancellationToken cancellationToken = default) =>
+			await _client.GenerateRequest(HttpMethod.Get, this._baseUrl + url, cancellationToken);
 
-				if (!string.IsNullOrEmpty(ex.ExceptionMessage))
-					ex.Message = ex.ExceptionMessage;
-				return new HttpClientErrorResponse(ex.ParseToException(), response.Headers, response.StatusCode);
-			}
-			catch (Exception ex)
-			{
-				return new HttpClientErrorResponse(ex.Message, response.Headers, response.StatusCode);
-			}
-		}
-
-		public async Task<HttpClientResponse<T>> GetAsync<T>(
-		  string url,
-		  CancellationToken cancellationToken = default)
-		{
-			if (_client == null)
-				throw new BadRequestException("Please set client before using");
-			var response = await _client.GetAsync(_baseUrl + url, cancellationToken);
-			if (response.StatusCode == HttpStatusCode.Unauthorized)
-				return new HttpClientErrorResponse<T>("Unauthorized", response.StatusCode);
-			var message = await response.Content.ReadAsStringAsync(cancellationToken);
-			if (response.IsSuccessStatusCode)
-				return new HttpClientSuccessResponse<T>(JsonConvert.DeserializeObject<T>(message), response.Headers);
-			try
-			{
-				var ex = JsonConvert.DeserializeObject<ExceptionResponse?>(message);
-				if (ex is null)
-					return new HttpClientErrorResponse<T>(message, response.Headers, response.StatusCode);
-
-				if (!string.IsNullOrEmpty(ex.ExceptionMessage))
-					ex.Message = ex.ExceptionMessage;
-				return new HttpClientErrorResponse<T>(ex.ParseToException(), response.Headers, response.StatusCode);
-			}
-			catch {
-				return new HttpClientErrorResponse<T>(message, response.Headers, response.StatusCode);
-			}
-		}
+		public async Task<HttpClientResponse<TResponse>> GetAsync<TResponse>(
+			string url,
+			CancellationToken cancellationToken = default) =>
+			await _client.GenerateRequest<TResponse>(HttpMethod.Get, _baseUrl + url, cancellationToken);
 
 		public async Task<HttpClientResponse> PostAsync<TRequest>(
-		  string url,
-		  TRequest data,
-		  CancellationToken cancellationToken = default)
-		{
-			if (_client == null)
-				throw new BadRequestException("Please set client before using");
-			var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
-			content.Headers.Add("Host",new Uri(url).Host);
-			var response = await _client.PostAsync(_baseUrl + url, content, cancellationToken);
-			if (response.StatusCode == HttpStatusCode.Unauthorized)
-				return new HttpClientErrorResponse("Unauthorized", response.StatusCode);
-			var message = await response.Content.ReadAsStringAsync(cancellationToken);
-			if (response.IsSuccessStatusCode)
-				return new HttpClientSuccessResponse(message, response.Headers);
-			try
-			{
-				var ex = JsonConvert.DeserializeObject<ExceptionResponse?>(message);
-				if(ex is null)
-					return new HttpClientErrorResponse(message, response.Headers, response.StatusCode);
-				if (!string.IsNullOrEmpty(ex.ExceptionMessage))
-					ex.Message = ex.ExceptionMessage;
-				return new HttpClientErrorResponse(ex.ParseToException(), response.Headers, response.StatusCode);
-			}
-			catch {
-				return new HttpClientErrorResponse(message, response.Headers, response.StatusCode);
+			string url,
+			TRequest data,
+			CancellationToken cancellationToken = default) =>
+			await _client.GenerateRequest(HttpMethod.Post, data, _baseUrl + url, cancellationToken);
 
-			}
-		}
 		public async Task<HttpClientResponse<TResponse>> PostAsync<TRequest,TResponse>(
 			string url,
 			TRequest data,
-			CancellationToken cancellationToken = default)
-		{
-			if (_client == null)
-				throw new BadRequestException("Please set client before using");
-			var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
-			content.Headers.Add("Host", new Uri(url).Host);
-			var response = await _client.PostAsync(_baseUrl + url, content, cancellationToken);
-			if (response.StatusCode == HttpStatusCode.Unauthorized)
-				return new HttpClientErrorResponse<TResponse>("Unauthorized", response.StatusCode);
-			var message = await response.Content.ReadAsStringAsync(cancellationToken);
-			if (response.IsSuccessStatusCode)
-				return new HttpClientSuccessResponse<TResponse>(JsonConvert.DeserializeObject<TResponse>(message), response.Headers);
-			try
-			{
-				var ex = JsonConvert.DeserializeObject<ExceptionResponse?>(message);
-				if (ex is null)
-					return new HttpClientErrorResponse<TResponse>(message, response.Headers, response.StatusCode);
-				if (!string.IsNullOrEmpty(ex.ExceptionMessage))
-					ex.Message = ex.ExceptionMessage;
-				return new HttpClientErrorResponse<TResponse>(ex.ParseToException(), response.Headers, response.StatusCode);
-			}
-			catch
-			{
-				return new HttpClientErrorResponse<TResponse>(message, response.Headers, response.StatusCode);
+			CancellationToken cancellationToken = default) =>
+			await _client.GenerateRequest<TRequest, TResponse>(HttpMethod.Post, data, _baseUrl + url,cancellationToken);
 
-			}
-		}
+		public async Task<HttpClientResponse> PostAsync(string url, CancellationToken cancellationToken = default) =>
+			await _client.GenerateRequest(HttpMethod.Post, _baseUrl + url, cancellationToken);
 
-		public async Task<HttpClientResponse> PostAsync(string url, CancellationToken cancellationToken = default)
-		{
-			if (_client == null)
-				throw new BadRequestException("Please set client before using");
-			var response = await _client.PostAsync(_baseUrl + url, null, cancellationToken);
-			if (response.StatusCode == HttpStatusCode.Unauthorized)
-				return new HttpClientErrorResponse("Unauthorized", response.StatusCode);
-			var message = await response.Content.ReadAsStringAsync(cancellationToken);
-			if (response.IsSuccessStatusCode)
-				return new HttpClientSuccessResponse(message, response.Headers);
-			try
-			{
-				var ex = JsonConvert.DeserializeObject<ExceptionResponse?>(message);
-				if (!string.IsNullOrEmpty(ex?.ExceptionMessage))
-					ex.Message = ex.ExceptionMessage;
-				return new HttpClientErrorResponse(ex.ParseToException(), response.Headers, response.StatusCode);
-			}
-			catch
-			{
-				return new HttpClientErrorResponse(message, response.Headers, response.StatusCode);
-			}
-		}
-		public async Task<HttpClientResponse<TResponse>> PostAsync<TResponse>(string url, CancellationToken cancellationToken = default)
-		{
-			if (_client == null)
-				throw new BadRequestException("Please set client before using");
-			var response = await _client.PostAsync(_baseUrl + url, null, cancellationToken);
-			if (response.StatusCode == HttpStatusCode.Unauthorized)
-				return new HttpClientErrorResponse<TResponse>("Unauthorized", response.StatusCode);
-			var message = await response.Content.ReadAsStringAsync(cancellationToken);
-			if (response.IsSuccessStatusCode)
-				return new HttpClientSuccessResponse<TResponse>(JsonConvert.DeserializeObject<TResponse>(message), response.Headers);
-			try
-			{
-				var ex = JsonConvert.DeserializeObject<ExceptionResponse?>(message);
-				if (!string.IsNullOrEmpty(ex?.ExceptionMessage))
-					ex.Message = ex.ExceptionMessage;
-				return new HttpClientErrorResponse<TResponse>(ex.ParseToException(), response.Headers, response.StatusCode);
-			}
-			catch
-			{
-				return new HttpClientErrorResponse<TResponse>(message, response.Headers, response.StatusCode);
-			}
-		}
+		public async Task<HttpClientResponse<TResponse>> PostAsync<TResponse>(string url,
+			CancellationToken cancellationToken = default) =>
+			await _client.GenerateRequest<TResponse>(HttpMethod.Post, _baseUrl + url, cancellationToken);
 
 
 		public async Task<HttpClientResponse> HttpPutAsync<T>(
-		  string url,
-		  T data,
-		  CancellationToken cancellationToken = default)
-		{
-			if (_client == null)
-				throw new BadRequestException("Please set client before using");
-			var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
-			content.Headers.Add("Host", new Uri(url).Host);
-			var response = await _client.PutAsync(_baseUrl + url, content, cancellationToken);
-			if (response.StatusCode == HttpStatusCode.Unauthorized)
-				return new HttpClientErrorResponse("Unauthorized", response.StatusCode);
-			var message = await response.Content.ReadAsStringAsync(cancellationToken);
-			if (response.IsSuccessStatusCode)
-				return new HttpClientSuccessResponse(message, response.Headers);
-			try
-			{
-				var ex = JsonConvert.DeserializeObject<ExceptionResponse?>(message);
-				if (!string.IsNullOrEmpty(ex?.ExceptionMessage))
-					ex.Message = ex.ExceptionMessage;
-				return new HttpClientErrorResponse(ex.ParseToException(), response.Headers, response.StatusCode);
-			}
-			catch {
-				return new HttpClientErrorResponse(message, response.Headers, response.StatusCode);
-			}
-		}
+			string url,
+			T data,
+			CancellationToken cancellationToken = default) =>
+			await _client.GenerateRequest(HttpMethod.Put, data, _baseUrl + url, cancellationToken);
 
 		public async Task<HttpClientResponse> PatchAsync<T>(
-		  string url,
-		  T data,
-		  CancellationToken cancellationToken = default)
-		{
-			if (_client == null)
-				throw new BadRequestException("Please set client before using");
-			var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
-			content.Headers.Add("Host", new Uri(url).Host);
-			var response = await _client.PatchAsync(_baseUrl + url, content, cancellationToken);
-			if (response.StatusCode == HttpStatusCode.Unauthorized)
-				return new HttpClientErrorResponse("Unauthorized", response.StatusCode);
-			var message = await response.Content.ReadAsStringAsync(cancellationToken);
-			if (response.IsSuccessStatusCode)
-				return new HttpClientSuccessResponse(message, response.Headers);
-			try
-			{
-				var ex = JsonConvert.DeserializeObject<ExceptionResponse?>(message);
-				if (!string.IsNullOrEmpty(ex?.ExceptionMessage))
-					ex.Message = ex.ExceptionMessage;
-				return new HttpClientErrorResponse(ex.ParseToException(), response.Headers, response.StatusCode);
-			}
-			catch {
-				return new HttpClientErrorResponse(message, response.Headers, response.StatusCode);
-			}
-		}
+			string url,
+			T data,
+			CancellationToken cancellationToken = default) =>
+			await _client.GenerateRequest(HttpMethod.Patch, data, _baseUrl + url, cancellationToken);
 
 		public async Task<HttpClientResponse> DeleteAsync(
-		  string url,
-		  CancellationToken cancellationToken = default)
-		{
-			if (_client == null)
-				throw new BadRequestException("Please set client before using");
-			var response = await _client.DeleteAsync(this._baseUrl + url, cancellationToken);
-			if (response.StatusCode == HttpStatusCode.Unauthorized)
-				return new HttpClientErrorResponse("Unauthorized", response.StatusCode);
-			var message = await response.Content.ReadAsStringAsync(cancellationToken);
-			if (response.IsSuccessStatusCode)
-				return new HttpClientSuccessResponse(message, response.Headers);
-			try
-			{
-				var ex = JsonConvert.DeserializeObject<ExceptionResponse?>(message);
-				if (!string.IsNullOrEmpty(ex?.ExceptionMessage))
-					ex.Message = ex.ExceptionMessage;
-				return new HttpClientErrorResponse(ex.ParseToException(), response.Headers, response.StatusCode);
-			}
-			catch {
-				return new HttpClientErrorResponse(message, response.Headers, response.StatusCode);
-			}
-		}
+			string url,
+			CancellationToken cancellationToken = default) =>
+			await _client.GenerateRequest(HttpMethod.Delete, _baseUrl + url, cancellationToken);
 	}
 }
