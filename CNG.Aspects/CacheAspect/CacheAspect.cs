@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using System.Text;
+﻿using System.Text;
 using Castle.DynamicProxy;
 using CNG.Aspects.Interceptors;
 using CNG.Cache;

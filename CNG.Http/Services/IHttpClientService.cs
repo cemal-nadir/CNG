@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using CNG.Http.Enums;
 using CNG.Http.Responses;
 
 namespace CNG.Http.Services
@@ -14,29 +15,34 @@ namespace CNG.Http.Services
 
 		void SetHeader(Dictionary<string, string> headers);
 
-		Task<HttpClientResponse> GetAsync(string url, CancellationToken cancellationToken = default(CancellationToken));
 
-		Task<HttpClientResponse<T>> GetAsync<T>(string url,
-			CancellationToken cancellationToken = default(CancellationToken));
+		Task<HttpClientResponse<TResponse>> GetAsync<TResponse>(string url, MediaType mediaType = MediaType.Json, Func<string,MediaType,string>? exceptionHandler = null,
+			CancellationToken cancellationToken = default);
 
-		Task<HttpClientResponse> PostAsync<T>(string url, T data, CancellationToken cancellationToken = default(CancellationToken));
+		Task<HttpClientResponse> PostAsync<TRequest>(string url, TRequest data, MediaType mediaType = MediaType.Json, Func<string,MediaType,string>? exceptionHandler = null, CancellationToken cancellationToken = default);
 
-		Task<HttpClientResponse> PostAsync(string url, CancellationToken cancellationToken = default(CancellationToken));
+		Task<HttpClientResponse> PostAsync(string url,MediaType mediaType=MediaType.Json, Func<string,MediaType,string>? exceptionHandler = null, CancellationToken cancellationToken = default);
 
-		Task<HttpClientResponse<TResponse>> PostAsync<TResponse>(string url,
+		Task<HttpClientResponse<TResponse>> PostAsync<TResponse>(string url, MediaType mediaType = MediaType.Json, Func<string,MediaType,string>? exceptionHandler = null,
 			CancellationToken cancellationToken = default);
 
 		Task<HttpClientResponse<TResponse>> PostAsync<TRequest, TResponse>(
 			string url,
 			TRequest data,
+			MediaType mediaType = MediaType.Json,
+			Func<string,MediaType,string>? exceptionHandler = null,
 			CancellationToken cancellationToken = default);
-		Task<HttpClientResponse> HttpPutAsync<T>(
+		Task<HttpClientResponse> HttpPutAsync<TRequest>(
 		  string url,
-		  T data,
-		  CancellationToken cancellationToken = default(CancellationToken));
+		  TRequest data,
+		  MediaType mediaType = MediaType.Json,
+		  Func<string,MediaType,string>? exceptionHandler = null,
+		  CancellationToken cancellationToken = default);
 
-		Task<HttpClientResponse> PatchAsync<T>(string url, T data, CancellationToken cancellationToken = default(CancellationToken));
+		Task<HttpClientResponse> PatchAsync<TRequest>(string url, TRequest data, MediaType mediaType = MediaType.Json, Func<string,MediaType,string>? exceptionHandler = null, CancellationToken cancellationToken = default);
 
-		Task<HttpClientResponse> DeleteAsync(string url, CancellationToken cancellationToken = default(CancellationToken));
+		Task<HttpClientResponse> DeleteAsync(string url,MediaType mediaType=MediaType.Json, Func<string,MediaType,string>? exceptionHandler = null, CancellationToken cancellationToken = default);
+
+	
 	}
 }

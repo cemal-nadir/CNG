@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CNG.Http.Responses;
+﻿using CNG.Http.Responses;
 using IdentityModel.Client;
 
 namespace CNG.Http.Services

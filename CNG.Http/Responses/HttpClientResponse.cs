@@ -8,9 +8,9 @@ namespace CNG.Http.Responses
   {
     protected HttpClientResponse(bool success, string message, HttpStatusCode statusCode)
     {
-      this.Success = success;
-      this.Message = message;
-      this.StatusCode = statusCode;
+      Success = success;
+      Message = message;
+      StatusCode = statusCode;
     }
 
     protected HttpClientResponse(
@@ -19,10 +19,10 @@ namespace CNG.Http.Responses
       HttpResponseHeaders headers,
       HttpStatusCode statusCode)
     {
-      this.Success = success;
-      this.Message = message;
-      this.Headers = headers;
-      this.StatusCode = statusCode;
+      Success = success;
+      Message = message;
+      Headers = headers;
+      StatusCode = statusCode;
     }
 
     public bool Success { get; }
@@ -37,10 +37,10 @@ namespace CNG.Http.Responses
   {
       protected HttpClientResponse(bool success, string message, T? data, HttpStatusCode statusCode)
       {
-          this.Success = success;
-          this.Message = message;
-          this.Data = data;
-          this.StatusCode = statusCode;
+          Success = success;
+          Message = message;
+          Data = data;
+          StatusCode = statusCode;
       }
 
       protected HttpClientResponse(
@@ -50,11 +50,11 @@ namespace CNG.Http.Responses
           HttpResponseHeaders headers,
           HttpStatusCode statusCode)
       {
-          this.Success = success;
-          this.Message = message;
-          this.Data = data;
-          this.Headers = headers;
-          this.StatusCode = statusCode;
+          Success = success;
+          Message = message;
+          Data = data;
+          Headers = headers;
+          StatusCode = statusCode;
       }
 
       public bool Success { get; }
