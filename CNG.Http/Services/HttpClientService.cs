@@ -50,82 +50,80 @@ namespace CNG.Http.Services
 			}
 		}
 
-		public async Task<HttpClientResponse<TResponse>> GetAsync<TResponse>(
-			string url,
-			MediaType mediaType = MediaType.Json,
-			 Func<string,MediaType,string>? exceptionHandler = null,
-			CancellationToken cancellationToken = default) =>
+		public async Task<HttpClientResponse<TResponse>> GetAsync<TResponse>(string url, ResponseType responseType = ResponseType.Json,
+			ExceptionResponseType? exceptionResponseType = null, Func<string, ExceptionResponseType?, string>? exceptionHandler = null,
+			CancellationToken cancellationToken = default)
+		{
+			return await _client.GenerateRequest<TResponse>(method: HttpMethod.Get, url: $"{_baseUrl}{url}",
+				responseType: responseType, exceptionResponseType: exceptionResponseType,
+				exceptionHandler: exceptionHandler,
+				cancellationToken: cancellationToken);
+		}
 
-			await _client.GenerateRequest<TResponse>(HttpMethod.Get, _baseUrl + url, mediaType, exceptionHandler,
-				cancellationToken);
+		public async Task<HttpClientResponse> PostAsync<TRequest>(string url, TRequest data, RequestType requestType = RequestType.Json,
+			ExceptionResponseType? exceptionResponseType = null, Func<string, ExceptionResponseType?, string>? exceptionHandler = null,
+			CancellationToken cancellationToken = default)
+		{
+			return await _client.GenerateRequest(method: HttpMethod.Post, data: data, url: $"{_baseUrl}{url}",
+				requestType: requestType, exceptionResponseType: exceptionResponseType,
+				exceptionHandler: exceptionHandler,
+				cancellationToken: cancellationToken);
+		}
 
+		public async Task<HttpClientResponse> PostAsync(string url, ExceptionResponseType? exceptionResponseType = null, Func<string, ExceptionResponseType?, string>? exceptionHandler = null,
+			CancellationToken cancellationToken = default)
+		{
+			return await _client.GenerateRequest(method: HttpMethod.Post, url: $"{_baseUrl}{url}",
+				exceptionResponseType: exceptionResponseType,
+				exceptionHandler: exceptionHandler, cancellationToken: cancellationToken);
 
-		public async Task<HttpClientResponse> PostAsync<TRequest>(
-			string url,
-			TRequest data,
-			MediaType mediaType = MediaType.Json,
-			 Func<string,MediaType,string>? exceptionHandler = null,
-			CancellationToken cancellationToken = default) =>
+		}
 
-			await _client.GenerateRequest(HttpMethod.Post, data, _baseUrl + url, mediaType, exceptionHandler,
-				cancellationToken);
+		public async Task<HttpClientResponse<TResponse>> PostAsync<TResponse>(string url, ResponseType responseType = ResponseType.Json,
+			ExceptionResponseType? exceptionResponseType = null, Func<string, ExceptionResponseType?, string>? exceptionHandler = null,
+			CancellationToken cancellationToken = default)
+		{
+			return await _client.GenerateRequest<TResponse>(method: HttpMethod.Post, url: $"{_baseUrl}{url}",
+				responseType: responseType, exceptionResponseType: exceptionResponseType,
+				exceptionHandler: exceptionHandler, cancellationToken: cancellationToken);
 
+		}
 
-		public async Task<HttpClientResponse<TResponse>> PostAsync<TRequest, TResponse>(
-			string url,
-			TRequest data,
-			MediaType mediaType = MediaType.Json,
-			 Func<string,MediaType,string>? exceptionHandler = null,
-			CancellationToken cancellationToken = default) =>
+		public async Task<HttpClientResponse<TResponse>> PostAsync<TRequest, TResponse>(string url, TRequest data, RequestType requestType = RequestType.Json,
+			ResponseType responseType = ResponseType.Json, ExceptionResponseType? exceptionResponseType = null,
+			Func<string, ExceptionResponseType?, string>? exceptionHandler = null, CancellationToken cancellationToken = default)
+		{
+			return await _client.GenerateRequest<TRequest, TResponse>(method: HttpMethod.Post, url: $"{_baseUrl}{url}",
+				data: data, requestType: requestType, responseType: responseType,
+				exceptionResponseType: exceptionResponseType, exceptionHandler: exceptionHandler,
+				cancellationToken: cancellationToken);
+		}
 
-			await _client.GenerateRequest<TRequest, TResponse>(HttpMethod.Post, data, _baseUrl + url, mediaType,
-				exceptionHandler, cancellationToken);
+		public async Task<HttpClientResponse> HttpPutAsync<TRequest>(string url, TRequest data, RequestType requestType = RequestType.Json,
+			ExceptionResponseType? exceptionResponseType = null, Func<string, ExceptionResponseType?, string>? exceptionHandler = null,
+			CancellationToken cancellationToken = default)
+		{
+			return await _client.GenerateRequest(method: HttpMethod.Put, url: $"{_baseUrl}{url}", data: data,
+				requestType: requestType, exceptionResponseType: exceptionResponseType,
+				exceptionHandler: exceptionHandler, cancellationToken: cancellationToken);
+		}
 
+		public async Task<HttpClientResponse> PatchAsync<TRequest>(string url, TRequest data, RequestType requestType = RequestType.Json,
+			ExceptionResponseType? exceptionResponseType = null, Func<string, ExceptionResponseType?, string>? exceptionHandler = null,
+			CancellationToken cancellationToken = default)
+		{
+			return await _client.GenerateRequest(method: HttpMethod.Patch, url: $"{_baseUrl}{url}", data: data,
+				requestType: requestType, exceptionResponseType: exceptionResponseType,
+				exceptionHandler: exceptionHandler, cancellationToken: cancellationToken);
+		}
 
-		public async Task<HttpClientResponse> PostAsync(string url,MediaType mediaType=MediaType.Json,
-			 Func<string,MediaType,string>? exceptionHandler = null, CancellationToken cancellationToken = default) =>
-
-			await _client.GenerateRequest(HttpMethod.Post, _baseUrl + url,mediaType, exceptionHandler, cancellationToken);
-
-
-		public async Task<HttpClientResponse<TResponse>> PostAsync<TResponse>(string url,
-			MediaType mediaType = MediaType.Json, Func<string,MediaType,string>? exceptionHandler = null,
-			CancellationToken cancellationToken = default) =>
-
-			await _client.GenerateRequest<TResponse>(HttpMethod.Post, _baseUrl + url, mediaType, exceptionHandler,
-				cancellationToken);
-
-
-
-		public async Task<HttpClientResponse> HttpPutAsync<TRequest>(
-			string url,
-			TRequest data,
-			MediaType mediaType = MediaType.Json,
-			 Func<string,MediaType,string>? exceptionHandler = null,
-			CancellationToken cancellationToken = default) =>
-
-			await _client.GenerateRequest(HttpMethod.Put, data, _baseUrl + url, mediaType, exceptionHandler,
-				cancellationToken);
-
-
-		public async Task<HttpClientResponse> PatchAsync<TRequest>(
-			string url,
-			TRequest data,
-			MediaType mediaType = MediaType.Json,
-			 Func<string,MediaType,string>? exceptionHandler = null,
-			CancellationToken cancellationToken = default) =>
-
-			await _client.GenerateRequest(HttpMethod.Patch, data, _baseUrl + url, mediaType, exceptionHandler,
-				cancellationToken);
-
-
-		public async Task<HttpClientResponse> DeleteAsync(
-			string url,
-			MediaType mediaType = MediaType.Json,
-			 Func<string,MediaType,string>? exceptionHandler = null,
-			CancellationToken cancellationToken = default) =>
-
-			await _client.GenerateRequest(HttpMethod.Delete, _baseUrl + url,mediaType, exceptionHandler, cancellationToken);
+		public async Task<HttpClientResponse> DeleteAsync(string url, ExceptionResponseType? exceptionResponseType = null, Func<string, ExceptionResponseType?, string>? exceptionHandler = null,
+			CancellationToken cancellationToken = default)
+		{
+			return await _client.GenerateRequest(method: HttpMethod.Delete, url: $"{_baseUrl}{url}",
+				exceptionResponseType: exceptionResponseType, exceptionHandler: exceptionHandler,
+				cancellationToken: cancellationToken);
+		}
 
 	}
 }

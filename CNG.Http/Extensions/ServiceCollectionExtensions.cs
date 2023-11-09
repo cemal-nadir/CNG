@@ -1,14 +1,13 @@
 ﻿#nullable enable
 using CNG.Http.Services;
 using Microsoft.Extensions.DependencyInjection;
-
 namespace CNG.Http.Extensions
 {
 	public static class ServiceCollectionExtensions
 	{
 		public static void AddHttpClientService(
-		  this IServiceCollection services,
-		  ServiceLifetime lifetime = ServiceLifetime.Scoped)
+			this IServiceCollection services,
+			ServiceLifetime lifetime = ServiceLifetime.Scoped)
 		{
 			switch (lifetime)
 			{
@@ -32,6 +31,7 @@ namespace CNG.Http.Extensions
 
 					break;
 			}
+
 			Console.WriteLine("Http Client Service is installed. LifeTime : " + lifetime);
 		}
 	}

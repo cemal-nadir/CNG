@@ -1,6 +1,6 @@
 ﻿namespace CNG.Http.Enums
 {
-	public enum MediaType
+	public enum ResponseType
 	{
 		Json,
 		Xml

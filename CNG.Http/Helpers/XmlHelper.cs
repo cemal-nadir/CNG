@@ -10,7 +10,7 @@ namespace CNG.Http.Helpers
 		{
 			if (data is null) return null;
 
-			
+
 			try
 			{
 				using var sw = new StringWriter();
@@ -18,11 +18,11 @@ namespace CNG.Http.Helpers
 				serializer.Serialize(sw, data, null);
 				return sw.ToString().Replace("utf-16", "utf-8");
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
-				throw new InvalidOperationException("XML serialization failed",ex);
+				throw new InvalidOperationException("XML serialization failed", ex);
 			}
-			
+
 		}
 
 		public static T? DeserializeObject<T>(string xmlString)
@@ -38,6 +38,7 @@ namespace CNG.Http.Helpers
 				throw new InvalidOperationException("XML deserialization failed", ex);
 			}
 		}
+
 		public static object? DeserializeObject(string xmlString)
 		{
 			try
