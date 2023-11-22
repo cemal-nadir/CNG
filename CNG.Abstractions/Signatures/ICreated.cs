@@ -7,6 +7,6 @@ namespace CNG.Abstractions.Signatures
   {
     string? CreatedUserId { get; set; }
 
-    DateTime CreatedAt { get; set; }
+    DateTimeOffset? CreatedAt { get; set; }
   }
 }

@@ -5,6 +5,6 @@ namespace CNG.Abstractions.Signatures
   {
     string? UpdatedUserId { get; set; }
 
-    DateTime? UpdatedAt { get; set; }
+    DateTimeOffset? UpdatedAt { get; set; }
   }
 }
