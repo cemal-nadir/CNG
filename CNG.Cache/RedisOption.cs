@@ -7,7 +7,7 @@ namespace CNG.Cache
       string instanceName,
       string identityName,
       string connectionString,
-      int absoluteExpiration)
+      int? absoluteExpiration=null)
     {
       InstanceName = instanceName;
       ConnectionString = connectionString;
@@ -21,6 +21,6 @@ namespace CNG.Cache
 
     public string ConnectionString { get; }
 
-    public int AbsoluteExpiration { get; }
+    public int? AbsoluteExpiration { get; }
   }
 }

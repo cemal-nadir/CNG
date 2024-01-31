@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
 
 namespace CNG.Cache
 {
@@ -11,7 +12,14 @@ namespace CNG.Cache
           ServiceLifetime lifetime = ServiceLifetime.Scoped)
         {
             services.AddSingleton(option);
-            switch (lifetime)
+
+            services.AddSingleton(provider =>
+            {
+	            var configuration = ConfigurationOptions.Parse(option.ConnectionString);
+	            return ConnectionMultiplexer.Connect(configuration);
+            });
+
+			switch (lifetime)
             {
                 case ServiceLifetime.Singleton:
                     services.AddSingleton<IRedisServer, RedisServer>();
@@ -21,12 +29,14 @@ namespace CNG.Cache
                     services.AddScoped<IRedisServer, RedisServer>();
                     services.AddScoped<ICacheService, RedisCacheService>();
                     break;
+                case ServiceLifetime.Transient:
                 default:
                     services.AddTransient<IRedisServer, RedisServer>();
                     services.AddTransient<ICacheService, RedisCacheService>();
                     break;
             }
-            Console.WriteLine("Redis Service is installed");
+           
+			Console.WriteLine("Redis Service is installed");
         }
     }
 }

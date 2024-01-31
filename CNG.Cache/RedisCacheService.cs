@@ -89,20 +89,40 @@ namespace CNG.Cache
         public async Task SetAsync(string? key, string data, int? minute = null, int db = 0)
         {
             minute ??= _option.AbsoluteExpiration;
+            TimeSpan? ts = minute is null ? null : TimeSpan.FromMinutes(minute.Value);
             var database = _server.GetDb(db);
             await RemoveAsync(key, db);
-            await database.StringSetAsync(new RedisKey(_option.InstanceName + "." + key), new RedisValue(data), TimeSpan.FromMinutes(minute.Value));
+            await database.StringSetAsync(new RedisKey(_option.InstanceName + "." + key), new RedisValue(data), ts);
         }
 
         public async Task SetAsync(string instanceName, string? key, string data, int? minute = null, int db = 0)
         {
             minute ??= _option.AbsoluteExpiration;
-            var database = _server.GetDb(db);
+            TimeSpan? ts = minute is null ? null : TimeSpan.FromMinutes(minute.Value);
+			var database = _server.GetDb(db);
             await RemoveAsync(key, db);
-            await database.StringSetAsync(new RedisKey(instanceName + "." + key),new RedisValue(data), TimeSpan.FromMinutes(minute.Value));
+            await database.StringSetAsync(new RedisKey(instanceName + "." + key),new RedisValue(data), ts);
+        }
+        public async Task SetAsync<T>(string? key, T data, int? minute = null, int db = 0) where T : class
+        {
+			minute ??= _option.AbsoluteExpiration;
+			TimeSpan? ts = minute is null ? null : TimeSpan.FromMinutes(minute.Value);
+			var database = _server.GetDb(db);
+	        await RemoveAsync(key, db);
+	        var dataString = JsonConvert.SerializeObject(data);
+	        await database.StringSetAsync(new RedisKey(_option.InstanceName + "." + key), new RedisValue(dataString), ts);
         }
 
-        public async Task RemoveAsync(string? key, int db = 0)
+        public async Task SetAsync<T>(string instanceName, string? key, T data, int? minute = null, int db = 0) where T : class
+		{
+			minute ??= _option.AbsoluteExpiration;
+			TimeSpan? ts = minute is null ? null : TimeSpan.FromMinutes(minute.Value);
+			var database = _server.GetDb(db);
+	        await RemoveAsync(key, db);
+	        var dataString = JsonConvert.SerializeObject(data);
+			await database.StringSetAsync(new RedisKey(instanceName + "." + key), new RedisValue(dataString), ts);
+        }
+		public async Task RemoveAsync(string? key, int db = 0)
         {
             var database = _server.GetDb(db);
             var flag = await AnyAsync(key, db);

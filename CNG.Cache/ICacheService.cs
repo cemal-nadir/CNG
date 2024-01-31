@@ -16,8 +16,10 @@ namespace CNG.Cache
         Task<string> GetAsync(string instanceName, string key, int db = 0);
 
         Task SetAsync(string? key, string data, int? minute = null, int db = 0);
+        Task SetAsync<T>(string? key, T data, int? minute = null, int db = 0) where T : class;
+        Task SetAsync<T>(string instanceName, string? key, T data, int? minute = null, int db = 0) where T : class;
 
-        Task SetAsync(string instanceName, string? key, string data, int? minute = null, int db = 0);
+		Task SetAsync(string instanceName, string? key, string data, int? minute = null, int db = 0);
 
         Task RemoveAsync(string? key, int db = 0);
 
