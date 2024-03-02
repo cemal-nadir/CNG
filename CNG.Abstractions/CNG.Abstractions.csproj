@@ -1,30 +1,38 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Title>Cemal Nadir Gorgorgil - Abstractions</Title>
-    <Authors>cemalnadirgorgorgil</Authors>
-    <Description>Abstractions package for my projects</Description>
-    <PackageIcon>icon.png</PackageIcon>
-    <PackageTags>abstractions</PackageTags>
-    <IncludeSymbols>True</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <RepositoryUrl>https://github.com/cemal-nadir/CNG</RepositoryUrl>
-    <PackageProjectUrl>https://www.nuget.org/packages/CNG.Abstractions</PackageProjectUrl>
-	  <Deterministic>False</Deterministic>
-	  <Copyright>https://raw.githubusercontent.com/cemal-nadir/CNG/master/LICENSE</Copyright>
-	  <GenerateDocumentationFile>False</GenerateDocumentationFile>
-	  <Version>1.0.3</Version>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>Cemal Nadir Gorgorgil - Abstractions</Title>
+		<Authors>cemalnadirgorgorgil</Authors>
+		<Description>Abstractions package for my projects</Description>
+		<PackageIcon>icon.png</PackageIcon>
+		<PackageTags>abstractions</PackageTags>
+		<IncludeSymbols>True</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PackageProjectUrl>https://github.com/cemal-nadir/CNG</PackageProjectUrl>
+		<PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+		<PackageLicenseFile></PackageLicenseFile>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<Deterministic>False</Deterministic>
+		<Version>1.0.4</Version>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Update="icon.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Update="icon.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
 
 </Project>

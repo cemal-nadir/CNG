@@ -1,22 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFrameworks>net7.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Title>Cemal Nadi Gorgorgil - Http</Title>
 		<Authors>cemalnadirgorgorgil</Authors>
-		<Description>Http package for my projects</Description>
-		<PackageIcon>icon.png</PackageIcon>
+		<Description>Selenium Chrome Driver package for my projects</Description>
+		<PackageTags>selenium,undetected selenium,undetected chrome</PackageTags>
 		<PackageProjectUrl>https://github.com/cemal-nadir/CNG</PackageProjectUrl>
 		<PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
 		<PackageLicenseFile></PackageLicenseFile>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<PackageTags>http extension</PackageTags>
+		<IncludeSymbols>True</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Deterministic>False</Deterministic>
-		<Version>4.0.3</Version>
+		<Version>0.0.1</Version>
+		<PackageIcon>icon.png</PackageIcon>
 	</PropertyGroup>
+
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
 		<NoWarn>$(NoWarn);1591</NoWarn>
@@ -26,24 +28,27 @@
 		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
 		<NoWarn>$(NoWarn);1591</NoWarn>
 	</PropertyGroup>
+
 	<ItemGroup>
-		<PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
-		<PackageReference Include="IdentityModel" Version="6.1.0" />
-		<PackageReference Include="IdentityModel.AspNetCore" Version="4.3.0" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	  <None Remove="icon.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="icon.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Selenium.WebDriver" Version="4.1.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="System.IO.Compression" Version="4.3.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\CNG.Core\CNG.Core.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<None Update="icon.png">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
-	</ItemGroup>
 
 </Project>

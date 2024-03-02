@@ -1,37 +1,46 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Title>Cemal Nadir Gorgorgil - Mongo Db</Title>
-    <Authors>cemalnadirgorgorgil</Authors>
-    <Description>MongoDb Package For My Projects</Description>
-    <PackageProjectUrl>https://www.nuget.org/packages/CNG.MongoDB</PackageProjectUrl>
-    <PackageIcon>icon.png</PackageIcon>
-    <PackageTags>mongodb</PackageTags>
-	  <RepositoryUrl>https://github.com/cemal-nadir/CNG</RepositoryUrl>
-	  <Deterministic>False</Deterministic>
-	  <Copyright>https://raw.githubusercontent.com/cemal-nadir/CNG/master/LICENSE</Copyright>
-	  <Version>1.0.1</Version>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>Cemal Nadir Gorgorgil - Mongo Db</Title>
+		<Authors>cemalnadirgorgorgil</Authors>
+		<Description>MongoDb Package For My Projects</Description>
+		<PackageProjectUrl>https://github.com/cemal-nadir/CNG</PackageProjectUrl>
+		<PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+		<PackageLicenseFile></PackageLicenseFile>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<PackageIcon>icon.png</PackageIcon>
+		<PackageTags>mongodb</PackageTags>
+		<Deterministic>False</Deterministic>
+		<Version>1.0.2</Version>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Humanizer.Core" Version="2.14.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
-    <PackageReference Include="MongoDB.Driver" Version="2.19.1" />
-  </ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Humanizer.Core" Version="2.14.1" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+		<PackageReference Include="MongoDB.Driver" Version="2.19.1" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\CNG.Abstractions\CNG.Abstractions.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\CNG.Abstractions\CNG.Abstractions.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="icon.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Update="icon.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
 
 </Project>

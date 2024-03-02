@@ -1,37 +1,46 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Title>Cemal Nadir Gorgorgil - Cache</Title>
-    <Authors>cemalnadirgorgorgil</Authors>
-    <Description>Cache package for my projects</Description>
-    <PackageProjectUrl>https://www.nuget.org/packages/CNG.Cache</PackageProjectUrl>
-    <PackageIcon>icon.png</PackageIcon>
-    <PackageTags>cache,redis</PackageTags>
-    <RepositoryUrl>https://github.com/cemal-nadir/CNG</RepositoryUrl>
-	  <Deterministic>False</Deterministic>
-	  <Copyright>https://raw.githubusercontent.com/cemal-nadir/CNG/master/LICENSE</Copyright>
-	  <Version>1.0.3</Version>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>Cemal Nadir Gorgorgil - Cache</Title>
+		<Authors>cemalnadirgorgorgil</Authors>
+		<Description>Cache package for my projects</Description>
+		<PackageProjectUrl>https://github.com/cemal-nadir/CNG</PackageProjectUrl>
+		<PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+		<PackageLicenseFile></PackageLicenseFile>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<PackageIcon>icon.png</PackageIcon>
+		<PackageTags>cache,redis</PackageTags>
+		<Deterministic>False</Deterministic>
+		<Version>1.0.4</Version>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="StackExchange.Redis" Version="2.6.104" />
-  </ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="StackExchange.Redis" Version="2.6.104" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\CNG.Core\CNG.Core.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\CNG.Core\CNG.Core.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="icon.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Update="icon.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
 
 </Project>
