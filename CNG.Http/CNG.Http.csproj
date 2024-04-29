@@ -15,7 +15,7 @@
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageTags>http extension</PackageTags>
 		<Deterministic>False</Deterministic>
-		<Version>4.0.3</Version>
+		<Version>4.0.4</Version>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>

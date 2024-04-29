@@ -59,8 +59,16 @@ namespace CNG.Http.Services
 				exceptionHandler: exceptionHandler,
 				cancellationToken: cancellationToken);
 		}
-
-		public async Task<HttpClientResponse> PostAsync<TRequest>(string url, TRequest data, RequestType requestType = RequestType.Json,
+        public async Task<HttpClientResponse> GetAsync(string url,
+            ExceptionResponseType? exceptionResponseType = null, Func<string, ExceptionResponseType?, string>? exceptionHandler = null,
+            CancellationToken cancellationToken = default)
+        {
+            return await _client.GenerateRequest(method: HttpMethod.Get, url: $"{_baseUrl}{url}",
+                exceptionResponseType: exceptionResponseType,
+                exceptionHandler: exceptionHandler,
+                cancellationToken: cancellationToken);
+        }
+        public async Task<HttpClientResponse> PostAsync<TRequest>(string url, TRequest data, RequestType requestType = RequestType.Json,
 			ExceptionResponseType? exceptionResponseType = null, Func<string, ExceptionResponseType?, string>? exceptionHandler = null,
 			CancellationToken cancellationToken = default)
 		{

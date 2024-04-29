@@ -17,7 +17,7 @@ namespace CNG.Extensions
 
 		public static void AddSwaggerServiceWithBearer(this IServiceCollection services, string name,
 			string? version = null, string? description = null, string? contactName = null, string? contactMail = null,
-			string? contactUrl = null)
+			string? contactUrl = null,bool xmlAccess=false)
 		{
 			services.AddSwaggerGen(c =>
 			{
@@ -64,13 +64,18 @@ namespace CNG.Extensions
 					}
 				};
 				swaggerGenOptions.AddSecurityRequirement(securityRequirement);
-			});
+
+                if (!xmlAccess) return;
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, $"{name}.xml");
+                c.IncludeXmlComments(xmlPath);
+
+            });
 			Console.WriteLine("Swagger Service is installed");
 		}
 
 		public static void AddSwaggerServiceWithBasic(this IServiceCollection services, string name,
 			string? version = null, string? description = null, string? contactName = null, string? contactMail = null,
-			string? contactUrl = null)
+			string? contactUrl = null,bool xmlAccess=false)
 		{
 			services.AddSwaggerGen(c =>
 			{
@@ -112,7 +117,11 @@ namespace CNG.Extensions
 				}
 			}, new List<string>() } };
 				swaggerGenOptions.AddSecurityRequirement(securityRequirement);
-			});
+
+                if (!xmlAccess) return;
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, $"{name}.xml");
+                c.IncludeXmlComments(xmlPath);
+            });
 			Console.WriteLine("Swagger Service is installed");
 		}
 

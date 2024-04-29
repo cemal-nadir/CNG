@@ -1,4 +1,5 @@
 ﻿
+using CNG.Abstractions.Models;
 using CNG.Abstractions.Signatures;
 
 namespace CNG.Abstractions.Repositories
@@ -10,5 +11,8 @@ namespace CNG.Abstractions.Repositories
     IQueryable<TEntity> Table { get; }
 
     IQueryable<TEntity> AsNoTracking { get; }
+
+    Task<(ICollection<TEntity>, int)> GetAllByFilterAsync(SearchFilter filter,
+        CancellationToken cancellationToken = default);
   }
 }

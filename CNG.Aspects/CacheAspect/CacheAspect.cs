@@ -16,11 +16,17 @@ namespace CNG.Aspects.CacheAspect
         [NonSerialized]
         private readonly object? _syncRoot;
         public readonly CacheAction Action;
-        public CacheAspect(CacheAction action,int duration)
+        public readonly int? Duration;
+        public readonly int Db;
+        public readonly string? Target;
+        public CacheAspect(CacheAction action,string?target=null, int duration=0,int db=0)
         {
             _cacheService ??= (ServiceTool.ServiceProvider ?? throw new AspectException("ServiceTool.ServiceProvider is null")).GetService<ICacheService>();
             _syncRoot ??= new object();
             Action = action;
+            Duration=duration is 0 ? null : duration;
+            Db=db;
+            Target=target;
         }
 
         public override void Intercept(IInvocation invocation)
@@ -29,7 +35,7 @@ namespace CNG.Aspects.CacheAspect
             {
                 case CacheAction.Add:
                 {
-                    var cacheKey = BuildCacheKey(invocation);
+                    var cacheKey = BuildCacheKey(invocation,Target);
                     if (_syncRoot == null) return;
                     lock (_syncRoot)
                     {
@@ -44,8 +50,8 @@ namespace CNG.Aspects.CacheAspect
                             if (_cacheService != null && !_cacheService.AnyAsync(cacheKey).Result)
                             {
                                 invocation.Proceed();
-                                string data = JsonConvert.SerializeObject(invocation.ReturnValue);
-                                _cacheService.SetAsync(cacheKey, data, 1440, 0);
+                                var data = JsonConvert.SerializeObject(invocation.ReturnValue);
+                                _cacheService.SetAsync(cacheKey, data, Duration, Db);
                             }
                             else
                             {
@@ -57,7 +63,6 @@ namespace CNG.Aspects.CacheAspect
                     break;
                 }
                 case CacheAction.Remove:
-                    break;
                 default:
                 {
                    
@@ -65,19 +70,19 @@ namespace CNG.Aspects.CacheAspect
                     if (_syncRoot == null) return;
                     lock (_syncRoot)
                     {
-                        var typeName = GetTypeName(invocation.TargetType);
-                        if (typeName != null) _cacheService?.RemoveByPatternAsync(typeName);
+                        var typeName = Target ?? GetTypeName(invocation.TargetType);
+                            if (typeName != null) _cacheService?.RemoveByPatternAsync(typeName);
                     }
 
                     break;
                 }
             }
         }
-        private string? BuildCacheKey(IInvocation invocation)
+        private string BuildCacheKey(IInvocation invocation,string? customTypeName=null)
         {
             const string divider = "_";
 
-            var typeName = GetTypeName(invocation.TargetType);
+            var typeName = customTypeName ?? GetTypeName(invocation.TargetType);
 
             var cacheKey = new StringBuilder();
             cacheKey.Append(typeName);
@@ -91,7 +96,7 @@ namespace CNG.Aspects.CacheAspect
 
             return cacheKey.ToString();
         }
-        private string? GetTypeName(Type type)
+        private static string? GetTypeName(Type type)
         {
             return ((type.UnderlyingSystemType).GenericTypeArguments.Any())
                 ? ((type.UnderlyingSystemType).GenericTypeArguments[0]).Name
