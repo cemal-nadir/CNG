@@ -15,7 +15,7 @@
 		<PackageIcon>icon.png</PackageIcon>
 		<PackageTags>mongodb</PackageTags>
 		<Deterministic>False</Deterministic>
-		<Version>1.0.2</Version>
+		<Version>1.0.6</Version>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>

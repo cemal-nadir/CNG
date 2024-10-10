@@ -1,5 +1,4 @@
-﻿#nullable enable
-namespace CNG.MongoDB.Configuration
+﻿namespace CNG.MongoDB.Configuration
 {
   public class MongoDbRepositoryOptions
   {
@@ -10,5 +9,6 @@ namespace CNG.MongoDB.Configuration
     public NamingConvention CollectionNamingConvention { get; set; } = NamingConvention.Snake;
 
     public bool PluralizeCollectionNames { get; set; } = true;
+    public bool UseSoftDelete { get; set; } = false;
   }
 }
