@@ -131,8 +131,6 @@ namespace CNG.Extensions
 			app.UseSwaggerUI(c =>
 			{
 				c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api Service");
-				c.DefaultModelsExpandDepth(-1);
-				c.DocExpansion(DocExpansion.None);
 			});
 			Console.WriteLine("Swagger Enabled");
 		}
