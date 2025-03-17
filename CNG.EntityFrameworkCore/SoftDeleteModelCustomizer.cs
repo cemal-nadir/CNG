@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using CNG.Abstractions.Signatures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -17,16 +18,15 @@ namespace CNG.EntityFrameworkCore
 
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
-                var isDeletedProperty = entityType.FindProperty("IsDeleted");
-                if (isDeletedProperty == null || isDeletedProperty.ClrType != typeof(bool)) continue;
+                if (!typeof(ISoftDeletable).IsAssignableFrom(entityType.ClrType))
+                    continue;
+
                 var parameter = Expression.Parameter(entityType.ClrType, "e");
-                var propertyMethod = typeof(EF).GetMethod("Property")?.MakeGenericMethod(typeof(bool));
-                if(propertyMethod is null)continue;
-                var propertyAccess = Expression.Call(propertyMethod, parameter, Expression.Constant("IsDeleted"));
-                var compareExpression = Expression.Equal(propertyAccess, Expression.Constant(false));
+                var converted = Expression.Convert(parameter, typeof(ISoftDeletable));
+                var isDeletedProperty = Expression.Property(converted, nameof(ISoftDeletable.IsDeleted));
+                var compareExpression = Expression.Equal(isDeletedProperty, Expression.Constant(false));
                 var lambda = Expression.Lambda(compareExpression, parameter);
 
-                // Global query filter olarak ekle
                 entityType.SetQueryFilter(lambda);
             }
         }

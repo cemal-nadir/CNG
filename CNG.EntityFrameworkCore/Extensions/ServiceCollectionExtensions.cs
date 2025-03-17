@@ -17,10 +17,11 @@ namespace CNG.EntityFrameworkCore.Extensions
             ServiceLifetime lifetime = ServiceLifetime.Transient)
             where TContext : DbContext
         {
-            if (option.UseSoftDelete)
-            {
+            services.AddSingleton<CreateUpdateInterceptor>();
+
+            if (option.UseSoftDelete) 
                 services.AddSingleton<SoftDeleteInterceptor>();
-            }
+
 
             switch (lifetime)
             {
@@ -40,7 +41,8 @@ namespace CNG.EntityFrameworkCore.Extensions
             {
                 if (option.UseSoftDelete)
                 {
-                    o.AddInterceptors(services.BuildServiceProvider().GetRequiredService<SoftDeleteInterceptor>());
+                    o.AddInterceptors(services.BuildServiceProvider().GetRequiredService<CreateUpdateInterceptor>(),
+                        services.BuildServiceProvider().GetRequiredService<SoftDeleteInterceptor>());
                 }
 
                 var connectionString = option.GetConnectionString();
