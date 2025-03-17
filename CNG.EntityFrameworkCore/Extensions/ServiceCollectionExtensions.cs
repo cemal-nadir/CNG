@@ -1,8 +1,10 @@
 ﻿using CNG.Core.Exceptions;
 using CNG.EntityFrameworkCore.Enums;
+using CNG.EntityFrameworkCore.Interceptors;
 using CNG.EntityFrameworkCore.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CNG.EntityFrameworkCore.Extensions
@@ -15,6 +17,11 @@ namespace CNG.EntityFrameworkCore.Extensions
             ServiceLifetime lifetime = ServiceLifetime.Transient)
             where TContext : DbContext
         {
+            if (option.UseSoftDelete)
+            {
+                services.AddSingleton<SoftDeleteInterceptor>();
+            }
+
             switch (lifetime)
             {
                 case ServiceLifetime.Singleton:
@@ -31,7 +38,13 @@ namespace CNG.EntityFrameworkCore.Extensions
             }
             services.AddDbContext<TContext>((Action<DbContextOptionsBuilder>)(o =>
             {
+                if (option.UseSoftDelete)
+                {
+                    o.AddInterceptors(services.BuildServiceProvider().GetRequiredService<SoftDeleteInterceptor>());
+                }
+
                 var connectionString = option.GetConnectionString();
+
                 switch (option.DatabaseType)
                 {
                     case DatabaseType.MsSql:
@@ -46,6 +59,12 @@ namespace CNG.EntityFrameworkCore.Extensions
                         throw new NotFoundException("DatabaseType not found");
                 }
             }), lifetime);
+
+            if (option.UseSoftDelete)
+            {
+                services.AddSingleton<IModelCustomizer, SoftDeleteModelCustomizer>();
+            }
+
             Console.WriteLine(option.DatabaseType + " Database Service is installed");
         }
 
